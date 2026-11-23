@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f5f7fb">
+<title>Percorso IBM SkillsBuild</title>
+<style>
+:root{color-scheme:light;--ink:#17233b;--muted:#66738a;--line:#e4e9f1;--paper:#fff;--bg:#f5f7fb;--blue:#1769e0;--blue-soft:#eaf2ff;--green:#14845b;--shadow:0 14px 36px rgba(24,45,79,.08)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
+header{background:linear-gradient(135deg,#112c59,#1769e0);color:white;padding:42px 20px 78px}
+.wrap{width:min(1060px,100% - 36px);margin:auto}.eyebrow{font-size:.77rem;font-weight:750;letter-spacing:.12em;text-transform:uppercase;opacity:.8}h1{font-size:clamp(2rem,5vw,3.15rem);line-height:1.1;margin:10px 0 12px;letter-spacing:-.04em}.intro{max-width:660px;color:#dce8ff;margin:0;font-size:1rem}
+main{margin-top:-46px;padding-bottom:50px}.dashboard{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:14px;margin-bottom:22px}.card{background:var(--paper);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow)}.stat{padding:19px 20px}.stat-label{color:var(--muted);font-size:.84rem}.stat-value{font-size:1.65rem;font-weight:760;letter-spacing:-.04em;margin-top:2px}.progress-card{grid-column:1/-1;padding:18px 20px}.progress-top{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:10px}.progress-top strong{font-size:.93rem}.progress-top span{font-size:.9rem;color:var(--muted)}.track{height:10px;background:#eaf0f8;border-radius:99px;overflow:hidden}.fill{height:100%;width:0;background:linear-gradient(90deg,#1769e0,#36a3ff);border-radius:inherit;transition:width .25s ease}
+.toolbar{display:flex;justify-content:space-between;gap:12px;align-items:center;margin:18px 0}.toolbar p{margin:0;color:var(--muted);font-size:.9rem}.button{border:1px solid var(--line);background:white;color:var(--ink);font:inherit;font-weight:650;border-radius:10px;padding:9px 13px;cursor:pointer}.button:hover{background:#f2f6fd}.sections{display:grid;gap:14px}.section{overflow:hidden}.section-head{padding:17px 20px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:flex-start;justify-content:space-between;gap:12px}.section-title{margin:0;font-size:1.03rem;line-height:1.35}.section-count{white-space:nowrap;color:var(--muted);font-size:.82rem;padding:4px 9px;background:#f2f5fa;border-radius:99px}
+.course{display:grid;grid-template-columns:48px minmax(0,1fr) 86px 42px;gap:12px;align-items:center;padding:13px 20px;border-bottom:1px solid #edf0f5;transition:background .15s}.course:last-child{border-bottom:0}.course:hover{background:#fbfcfe}.course.done{background:#f4fbf7}.num{font-variant-numeric:tabular-nums;color:#68758c;font-weight:700;font-size:.86rem}.title{font-weight:620;line-height:1.35}.course.done .title{text-decoration:line-through;color:#748277}.meta{color:var(--muted);font-size:.84rem;margin-top:4px}.hours{text-align:right;color:#53617a;font-size:.85rem;white-space:nowrap}.hours b{color:var(--ink);font-weight:700}.open{justify-self:end;color:var(--blue);font-weight:700;text-decoration:none;font-size:.86rem}.open:hover{text-decoration:underline}.check{width:21px;height:21px;accent-color:var(--green);cursor:pointer;justify-self:center}.footnote{padding:13px 20px;color:var(--muted);font-size:.82rem}
+@media(max-width:650px){header{padding:32px 0 70px}.wrap{width:min(100% - 24px,1060px)}.dashboard{grid-template-columns:1fr 1fr;gap:9px}.stat{padding:14px}.stat-value{font-size:1.35rem}.progress-card{padding:15px}.toolbar{align-items:flex-start;flex-direction:column}.section-head{padding:15px}.course{grid-template-columns:34px minmax(0,1fr) 36px;gap:9px;padding:12px 14px}.hours{grid-column:2;grid-row:2;text-align:left;margin-top:-8px;font-size:.78rem}.check{grid-column:3;grid-row:1}.open{grid-column:3;grid-row:2;font-size:.8rem}.num{font-size:.8rem}.title{font-size:.94rem}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<header><div class="wrap"><div class="eyebrow">Il tuo piano di apprendimento</div><h1>IBM SkillsBuild</h1><p class="intro">Segna le attività completate e tieni sotto controllo il tuo percorso, macroargomento per macroargomento.</p></div></header>
+<main class="wrap">
+<section class="dashboard" aria-label="Progresso del percorso">
+<div class="card stat"><div class="stat-label">Attività completate</div><div class="stat-value" id="completed">0 / 36</div></div>
+<div class="card stat"><div class="stat-label">Progresso</div><div class="stat-value" id="percent">0%</div></div>
+<div class="card stat"><div class="stat-label">Ore completate</div><div class="stat-value" id="hours">0 / 244 h</div></div>
+<div class="card progress-card"><div class="progress-top"><strong>Avanzamento complessivo</strong><span id="progressText">0 di 36 attività</span></div><div class="track" role="progressbar" aria-label="Progresso complessivo" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progressTrack"><div class="fill" id="progressFill"></div></div></div>
+</section>
+<div class="toolbar"><p>Le spunte vengono salvate automaticamente in questo browser.</p><button class="button" id="reset" type="button">Azzera progressi</button></div>
+<div class="sections" id="sections"></div>
+</main>
+<script>
+"use strict";
+const KEY="ibmSkillsBuildProgress_v1";
+const groups=[
+{title:"1. Artificial Intelligence (AI) and Cognitive Technologies",items:[
+[1,"Information Technology Fundamentals",11,"PLAN-189E4B1AF551"],
+[2,"Build Your Own Chatbot",5.5,"ALM-COURSE_4080336"],
+[2,"Podcast","included","URL-BBE70578D6FC"],
+[3,"AI Literacy",4,"PLAN-18EB492D5259"],
+[4,"Building Robots with TJBot (English)",3,"CAI-COURSE-V1:COGNITIVECLASS+IT0101EN+V1"]]},
+{title:"2. Data Science",items:[
+[5,"Data Science 101",3,"ALM-COURSE_4080334"],
+[5,"Introduction to Cloud",6,"ALM-COURSE_4079795"],
+[6,"Data Science Methodology",4,"ALM-COURSE_4080340"]]},
+{title:"3. Big Data Foundations – Intermediate Learning Path",items:[
+[7,"Big Data 101",3,"ALM-COURSE_4079785"],
+[8,"Data Science in our world",2,"ALM-COURSE_4059052"],
+[9,"Spark Fundamentals I",4,"ALM-COURSE_4079804"]]},
+{title:"4. Coding and Programming – Getting Started",items:[
+[10,"Build Your First Web Pages With HTML and CSS",10,"URL-91584CC5002C"],
+[11,"Learn Programming with JavaScript",15,"URL-11C635813B1A"],
+[12,"Build web apps with ReactJS",10,"URL-D3F5599BA88B"],
+[13,"Learn CSS Tutorial",9,"URL-1188298FBFD4"],
+[14,"Learn JavaScript Tutorial",11,"URL-AFA6CE81957C"],
+[15,"JavaScript and HTML DOM Reference",0.5,"URL-97289C23AA41"],
+[16,"OpenToonz – GitHub",0.5,"URL-1C275ED3E5D5"],
+[16,"Overview of Data Tools and Languages",1.5,"ALM-COURSE_4058995"]]},
+{title:"5. Coding and Programming – Intermediate",items:[
+[17,"Create web page layouts with CSS",10,"URL-A0271FB24F98"],
+[18,"Write JavaScript for the Web",10,"URL-7B529F225BB8"],
+[19,"Learn the Command Line in Terminal",4,"URL-28B61942CCA7"],
+[20,"Learn C++ Tutorial",8,"URL-54BB179AEFC8?channelId=CNL_LCB_1595012253103&channelNavigation=true"],
+[21,"Web Development Fundamentals",12,"PLAN-43A030B97485"],
+[22,"Learn Angular JS Tutorial",5.5,"URL-CD01B31B0470"],
+[23,"Learn PHP Tutorial",9,"URL-0247EE59741E"],
+[24,"Learn jQuery Tutorial",6,"URL-2B583B3C99A0"]]},
+{title:"6. Coding and Programming – Advanced",items:[
+[25,"Learn Python Basics for Data Analysis",12,"URL-4FE5409FB67B"],
+[26,"Applied Data Science with Python",9,"PLAN-1B5099824097?channelId=CNL_LCB_1602705176870&channelNavigation=true"],
+[27,"Learn Python Tutorial",9,"URL-B634D08B3DF9"],
+[28,"Learn Programming with Java",15,"URL-442069BB6CBD"],
+[29,"Think like a computer: the logic of programming",4,"URL-29067BF390C9"],
+[30,"Learn Java Tutorial",9,"URL-C38FB7853314"],
+[31,"Artificial Intelligence Fundamentals",10,"PLAN-CC702B39D429"],
+[32,"Learn Machine Learning with Python Tutorial",3,"URL-64A72F641931"],
+[33,"Introduction to Game AI and Reinforcement Learning",5.5,"URL-A68D3737BB1F"]]}];
+const total=groups.reduce((n,g)=>n+g.items.length,0);
+const courseHours=item=>typeof item[2]==="number"?item[2]:0;
+function readState(){try{const parsed=JSON.parse(localStorage.getItem(KEY)||"{}");return parsed&&typeof parsed==="object"?parsed:{}}catch{return {}}}
+let state=readState();
+function safeUrl(id){return "https://students.yourlearning.ibm.com/activity/"+id}
+function render(){
+ const root=document.getElementById("sections");
+ root.innerHTML="";
+ groups.forEach((group,gi)=>{
+  const card=document.createElement("section");card.className="card section";
+  const head=document.createElement("div");head.className="section-head";
+  const h=document.createElement("h2");h.className="section-title";h.textContent=group.title;
+  const count=document.createElement("span");count.className="section-count";count.textContent=group.items.length+" attività";
+  head.append(h,count);card.append(head);
+  group.items.forEach((item,ii)=>{
+   const id="g"+gi+"-i"+ii;const row=document.createElement("div");row.className="course"+(state[id]?" done":"");
+   const num=document.createElement("span");num.className="num";num.textContent=String(item[0]).padStart(2,"0");
+   const info=document.createElement("div");const name=document.createElement("div");name.className="title";name.textContent=item[1];info.append(name);
+   const meta=document.createElement("div");meta.className="meta";meta.textContent="IBM SkillsBuild";info.append(meta);
+   const hours=document.createElement("div");hours.className="hours";hours.innerHTML=typeof item[2]==="number"?"<b>"+String(item[2]).replace(".",",")+" h</b>":'Incluso';
+   const link=document.createElement("a");link.className="open";link.href=safeUrl(item[3]);link.target="_blank";link.rel="noopener noreferrer";link.textContent="Apri";
+   const check=document.createElement("input");check.type="checkbox";check.className="check";check.checked=Boolean(state[id]);check.setAttribute("aria-label","Segna come completato: "+item[1]);
+   check.addEventListener("change",()=>{state[id]=check.checked;row.classList.toggle("done",check.checked);save();update()});
+   row.append(num,info,hours,link,check);card.append(row);
+  });
+  root.append(card);
+ });
+ update();
+}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(state))}catch{document.querySelector(".toolbar p").textContent="Impossibile salvare: lo spazio del browser non è disponibile."}}
+function update(){
+ const checks=[...document.querySelectorAll(".check")],done=checks.filter(c=>c.checked).length;
+ const allItems=groups.flatMap((g,gi)=>g.items.map((it,ii)=>({id:"g"+gi+"-i"+ii,item:it})));
+ const doneHours=allItems.filter(x=>state[x.id]).reduce((s,x)=>s+courseHours(x.item),0);
+ const totalHours=allItems.reduce((s,x)=>s+courseHours(x.item),0);
+ const pct=Math.round(done/total*100);
+ document.getElementById("completed").textContent=done+" / "+total;
+ document.getElementById("percent").textContent=pct+"%";
+ document.getElementById("hours").textContent=String(doneHours).replace(".",",")+" / "+String(totalHours).replace(".",",")+" h";
+ document.getElementById("progressText").textContent=done+" di "+total+" attività";
+ document.getElementById("progressFill").style.width=pct+"%";
+ const bar=document.getElementById("progressTrack");bar.setAttribute("aria-valuenow",String(pct));
+}
+document.getElementById("reset").addEventListener("click",()=>{if(!Object.values(state).some(Boolean))return;if(confirm("Vuoi azzerare tutte le attività completate?")){state={};save();render()}});
+render();
+</script>
+</body>
+</html>
+
